@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/controller"
-	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/model"
+	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/dao"
 	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/service"
 	"github.com/stretchr/testify/assert"
 )
@@ -18,8 +18,8 @@ import (
 type MockContactService struct{ service.ContactService }
 
 func (m *MockContactService) AddContact(uid, cid int64) error { return nil }
-func (m *MockContactService) GetContacts(uid int64) ([]*model.Contact, error) {
-	return []*model.Contact{{ID: 2, ContactID: 3}}, nil
+func (m *MockContactService) GetContacts(uid int64) ([]*dao.ContactDAO, error) {
+	return []*dao.ContactDAO{{UserID: 2, ContactID: 3}}, nil
 }
 func (m *MockContactService) RemoveContact(uid, cid int64) error { return nil }
 

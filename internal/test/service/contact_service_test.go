@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/dao"
 	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/model"
 	"github.com/rishabhdeo60-dev/whatsapp-clone/internal/service"
 	"github.com/stretchr/testify/assert"
@@ -44,9 +45,9 @@ func (m *MockContactRepository) AddContact(ctx context.Context, userID, contactI
 	return args.Error(0)
 }
 
-func (m *MockContactRepository) GetContacts(ctx context.Context, userID int64) ([]*model.Contact, error) {
+func (m *MockContactRepository) GetContacts(ctx context.Context, userID int64) ([]*dao.ContactDAO, error) {
 	args := m.Called(ctx, userID)
-	return args.Get(0).([]*model.Contact), args.Error(1)
+	return args.Get(0).([]*dao.ContactDAO), args.Error(1)
 }
 
 func (m *MockContactRepository) RemoveContact(ctx context.Context, userID, contactID int64) error {
