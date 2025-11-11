@@ -8,6 +8,7 @@ import (
 // RunMigrations creates required tables if they don’t exist.
 func (db *DB) RunMigrations(ctx context.Context) {
 	queries := []string{
+		//USERS TABLE
 		`
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -25,6 +26,7 @@ func (db *DB) RunMigrations(ctx context.Context) {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT;`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP;`,
 
+		//CONTACTS TABLE
 		`
 		CREATE TABLE IF NOT EXISTS contacts (
 			id SERIAL PRIMARY KEY,
@@ -35,6 +37,19 @@ func (db *DB) RunMigrations(ctx context.Context) {
 		);
 		`,
 		`ALTER TABLE contacts ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;`,
+
+		//MESSAGES TABLE
+		`
+		CREATE TABLE IF NOT EXISTS messages (
+			id SERIAL PRIMARY KEY,
+			sender_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			receiver_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			content TEXT NOT NULL,
+			status VARCHAR(20) DEFAULT 'sent',
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+		`,
 	}
 
 	for _, q := range queries {
